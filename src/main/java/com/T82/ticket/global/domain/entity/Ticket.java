@@ -22,6 +22,8 @@ public class Ticket {
     private Long ticketId;
     @Column(name = "USER_ID")
     private Long userId;
+    @Column(name = "SEAT_ID")
+    private Long seatId;
     @Column(name = "SECTION_NAME")
     private String sectionName;
     @Column(name = "ROW_NUM")
