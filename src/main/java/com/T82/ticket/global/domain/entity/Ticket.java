@@ -1,5 +1,8 @@
 package com.T82.ticket.global.domain.entity;
 
+import com.T82.ticket.dto.request.TicketRequestDto;
+import com.T82.ticket.dto.response.EventInfoResponseDto;
+import com.T82.ticket.dto.response.SeatResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,9 +24,9 @@ public class Ticket {
     @Column(name = "TICKET_ID")
     private Long ticketId;
     @Column(name = "USER_ID")
-    private Long userId;
+    private String userId;
     @Column(name = "SEAT_ID")
-    private Long seatId;
+    private String seatId;
     @Column(name = "SECTION_NAME")
     private String sectionName;
     @Column(name = "ROW_NUM")
@@ -37,9 +40,26 @@ public class Ticket {
     @Column(name = "EVENT_START_TIME")
     private Date eventStartTime;
     @Column(name = "PAYMENT_DATE")
-    private Date paymentDate;
+    private String paymentDate;
     @Column(name = "PAYMENT_AMOUNT")
-    private Long paymentAmount;
+    private int paymentAmount;
     @Column(name = "ORDER_NUM")
     private String orderNum;
+
+    public static Ticket toEntity(TicketRequestDto req, EventInfoResponseDto eventInfo, SeatResponseDto seat, int amount) {
+
+        return Ticket.builder()
+                .userId(req.userId())
+                .sectionName(seat.seatSection())
+                .seatId(seat.seatId())
+                .rowNum(seat.seatRowNumber())
+                .columnNum(seat.seatColumnNumber())
+                .isRefund(false)
+                .eventName(eventInfo.title())
+                .eventStartTime(eventInfo.eventStartTime())
+                .paymentDate(req.paymentDate())
+                .paymentAmount(amount)
+                .orderNum(req.orderNo())
+                .build();
+    }
 }
