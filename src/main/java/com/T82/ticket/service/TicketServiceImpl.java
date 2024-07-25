@@ -3,18 +3,22 @@ package com.T82.ticket.service;
 import com.T82.ticket.api.ApiFeign;
 import com.T82.ticket.dto.request.TicketRequestDto;
 import com.T82.ticket.dto.response.EventInfoResponseDto;
-import com.T82.ticket.dto.response.SeatListResponseDto;
 import com.T82.ticket.dto.response.SeatResponseDto;
-import com.T82.ticket.global.domain.dto.TicketDto;
+import com.T82.ticket.dto.response.TicketResponseDto;
+import com.T82.ticket.global.domain.dto.UserDto;
 import com.T82.ticket.global.domain.entity.Ticket;
 import com.T82.ticket.global.domain.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -46,4 +50,13 @@ public class TicketServiceImpl implements TicketService {
                     });
         });
     }
+
+    @Override
+    @Transactional
+    public Page<TicketResponseDto> getValidTickets(Pageable pageRequest) {
+        UserDto principal = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Page<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(principal.getId(),new Date(), pageRequest);
+        return allByUserId.map(TicketResponseDto::from);
+    }
+
 }
