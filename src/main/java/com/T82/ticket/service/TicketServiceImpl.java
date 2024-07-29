@@ -53,9 +53,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public Page<TicketResponseDto> getValidTickets(Pageable pageRequest) {
-        UserDto principal = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Page<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(principal.getId(),new Date(), pageRequest);
+    public Page<TicketResponseDto> getValidTickets(UserDto userDto, Pageable pageRequest) {
+        Page<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(userDto.getId(),new Date(), pageRequest);
         return allByUserId.map(TicketResponseDto::from);
     }
 
