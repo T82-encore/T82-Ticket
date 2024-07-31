@@ -59,7 +59,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public void refundTicket(Long seatId) {
         Ticket bySeatId = ticketRepository.findBySeatId(seatId).orElseThrow(SeatNotFoundException::new);
-        bySeatId.setRefund(true);
+        bySeatId.refundTicket();
     }
 
 

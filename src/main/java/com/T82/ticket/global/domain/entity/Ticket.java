@@ -43,6 +43,10 @@ public class Ticket {
     @Column(name = "ORDER_NUM")
     private String orderNum;
 
+    public void refundTicket(){
+        this.isRefund = true;
+    }
+
     public static Ticket toEntity(TicketRequestDto req, EventInfoResponseDto eventInfo, SeatResponseDto seat, int amount) {
 
         return Ticket.builder()
