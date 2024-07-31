@@ -8,5 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface TicketService {
     void saveTickets(TicketRequestDto req);
+    void refundTicket(Long seatId);
     Page<TicketResponseDto> getValidTickets(UserDto userDto, Pageable pageRequest);
 }

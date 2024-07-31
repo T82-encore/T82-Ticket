@@ -4,10 +4,7 @@ import com.T82.ticket.dto.request.TicketRequestDto;
 import com.T82.ticket.dto.response.EventInfoResponseDto;
 import com.T82.ticket.dto.response.SeatResponseDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -33,7 +30,7 @@ public class Ticket {
     private Integer rowNum;
     @Column(name = "COLUMN_NUM")
     private Integer columnNum;
-    @Column(name = "IS_REFUND")
+    @Column(name = "IS_REFUND") @Setter
     private boolean isRefund;
     @Column(name = "EVENT_NAME")
     private String eventName;
@@ -45,6 +42,10 @@ public class Ticket {
     private int paymentAmount;
     @Column(name = "ORDER_NUM")
     private String orderNum;
+
+    public void refundTicket(){
+        this.isRefund = true;
+    }
 
     public static Ticket toEntity(TicketRequestDto req, EventInfoResponseDto eventInfo, SeatResponseDto seat, int amount) {
 
