@@ -8,6 +8,7 @@ import java.util.Date;
 
 public record TicketResponseDto (
         Long ticketId,
+        Long eventInfoId,
         String userId,
         Long seatId,
         String sectionName,
@@ -23,6 +24,7 @@ public record TicketResponseDto (
     public static TicketResponseDto from(Ticket ticket){
         return new TicketResponseDto(
                 ticket.getTicketId(),
+                ticket.getEventInfoId(),
                 ticket.getUserId(),
                 ticket.getSeatId(),
                 ticket.getSectionName(),
