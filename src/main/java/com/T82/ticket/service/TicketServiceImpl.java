@@ -34,22 +34,18 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public void saveTickets(TicketRequestDto req) {
-        log.error("Kafka Log {}", req.toString());
-
         EventInfoResponseDto eventInfo = apiFeign.getEventInfo(req.eventId());
         // 좌석 ID 목록 생성
         List<Long> seatIdList = new ArrayList<>();
         req.items().forEach(item -> seatIdList.add((long) item.seatId()));
         // 좌석 정보 가져오기
         List<SeatResponseDto> seats = apiFeign.getSeats(seatIdList);
-        log.error("feign {}", seats.toString());
         // 좌석 정보와 요청 항목을 매칭하여 티켓 저장
         seats.forEach(seat -> {
             req.items().stream()
                     .filter(item -> item.seatId()==seat.seatId())
                     .forEach(item -> {
                         Ticket ticket = Ticket.toEntity(req, eventInfo, seat, item.amount());
-                        log.error("before save {}", ticket.toString());
                         ticketRepository.save(ticket);
                     });
         });
