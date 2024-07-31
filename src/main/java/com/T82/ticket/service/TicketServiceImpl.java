@@ -43,12 +43,13 @@ public class TicketServiceImpl implements TicketService {
         // 좌석 정보와 요청 항목을 매칭하여 티켓 저장
         seats.forEach(seat -> {
             req.items().stream()
-                    .filter(item -> String.valueOf(item.seatId()).equals(seat.seatId()))
+                    .filter(item -> item.seatId()==seat.seatId())
                     .forEach(item -> {
                         Ticket ticket = Ticket.toEntity(req, eventInfo, seat, item.amount());
                         ticketRepository.save(ticket);
                     });
         });
+
     }
 
     @Override

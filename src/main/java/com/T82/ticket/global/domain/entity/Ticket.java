@@ -21,10 +21,12 @@ public class Ticket {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TICKET_ID")
     private Long ticketId;
+    @Column(name = "EVENTINFO_ID")
+    private Long eventInfoId;
     @Column(name = "USER_ID")
     private String userId;
     @Column(name = "SEAT_ID")
-    private String seatId;
+    private Long seatId;
     @Column(name = "SECTION_NAME")
     private String sectionName;
     @Column(name = "ROW_NUM")
@@ -48,6 +50,7 @@ public class Ticket {
 
         return Ticket.builder()
                 .userId(req.userId())
+                .eventInfoId(eventInfo.eventInfoId())
                 .sectionName(seat.seatSection())
                 .seatId(seat.seatId())
                 .rowNum(seat.seatRowNumber())
