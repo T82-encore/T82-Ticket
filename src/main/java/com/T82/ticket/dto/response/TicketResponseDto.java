@@ -9,7 +9,7 @@ import java.util.Date;
 public record TicketResponseDto (
         Long ticketId,
         String userId,
-        String seatId,
+        Long seatId,
         String sectionName,
         Integer rowNum,
         Integer columnNum,

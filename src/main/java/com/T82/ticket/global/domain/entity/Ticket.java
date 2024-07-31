@@ -24,7 +24,7 @@ public class Ticket {
     @Column(name = "USER_ID")
     private String userId;
     @Column(name = "SEAT_ID")
-    private String seatId;
+    private Long seatId;
     @Column(name = "SECTION_NAME")
     private String sectionName;
     @Column(name = "ROW_NUM")
