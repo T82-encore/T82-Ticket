@@ -2,6 +2,7 @@ package com.T82.ticket.service;
 
 import com.T82.ticket.api.ApiFeign;
 import com.T82.ticket.dto.request.TicketRequestDto;
+import com.T82.ticket.dto.request.refundRequestDto;
 import com.T82.ticket.dto.response.EventInfoResponseDto;
 import com.T82.ticket.dto.response.SeatResponseDto;
 import com.T82.ticket.dto.response.TicketResponseDto;
@@ -30,10 +31,11 @@ public class TicketServiceImpl implements TicketService {
     /**
      * 결제 후 Kafka로 예매결과, 결제결과정보 전송 후 처리
      */
-    @KafkaListener(topics = "paymentSuccess")
+    @KafkaListener(topics = "paymentSuccess", groupId = "paymentSuccess-group")
     @Override
     @Transactional
     public void saveTickets(TicketRequestDto req) {
+        log.info("paymentSuccess = {}",req.toString());
         EventInfoResponseDto eventInfo = apiFeign.getEventInfo(req.eventId());
         // 좌석 ID 목록 생성
         List<Long> seatIdList = new ArrayList<>();
@@ -54,11 +56,12 @@ public class TicketServiceImpl implements TicketService {
     /**
      * 환불시 Kafka로 seatId를 받아서 해당 쿠폰 삭제
      */
-    @KafkaListener(topics = "refundTicket")
+    @KafkaListener(topics = "refundTicket", groupId = "refundTicket-group")
     @Override
     @Transactional
-    public void refundTicket(Long seatId) {
-        Ticket bySeatId = ticketRepository.findBySeatId(seatId).orElseThrow(SeatNotFoundException::new);
+    public void refundTicket(refundRequestDto req) {
+        log.info("kafka seatId = {}",req.seatId());
+        Ticket bySeatId = ticketRepository.findBySeatId(req.seatId()).orElseThrow(SeatNotFoundException::new);
         bySeatId.refundTicket();
     }
 
