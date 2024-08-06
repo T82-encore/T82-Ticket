@@ -76,7 +76,7 @@ public class TicketServiceImpl implements TicketService {
     private MultipartFile createQRCode(TicketRequestDto req, SeatRequestDto item) {
         byte[] qrCodeData = new byte[0];
         try {
-            qrCodeData = qrCodeService.generateQRCode(String.valueOf(req.eventId()),200, 200);
+            qrCodeData = qrCodeService.generateQRCode(String.valueOf(item.seatId()),200, 200);
         } catch (WriterException | IOException e) {
             throw new RuntimeException(e);
         }
