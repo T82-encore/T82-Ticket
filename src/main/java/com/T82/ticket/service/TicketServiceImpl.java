@@ -38,7 +38,7 @@ public class TicketServiceImpl implements TicketService {
     /**
      * 결제 후 Kafka로 예매결과, 결제결과정보 전송 후 처리
      */
-    @KafkaListener(topics = "paymentSuccess", groupId = "paymentSuccess-group")
+    @KafkaListener(topics = "paymentSuccess", groupId = "paySuccess-group")
     @Override
     @Transactional
     public void saveTickets(TicketRequestDto req) {
@@ -88,7 +88,7 @@ public class TicketServiceImpl implements TicketService {
     /**
      * 환불시 Kafka로 seatId를 받아서 해당 쿠폰 삭제
      */
-    @KafkaListener(topics = "refundTicket", groupId = "refundTicket-group")
+    @KafkaListener(topics = "refundTicket", groupId = "refund-group")
     @Override
     @Transactional
     public void refundTicket(refundRequestDto req) {
