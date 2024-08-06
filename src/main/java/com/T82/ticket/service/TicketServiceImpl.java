@@ -56,10 +56,9 @@ public class TicketServiceImpl implements TicketService {
                     .forEach(item -> {
                         // qr코드 생성
                         MultipartFile multipartFile = createQRCode(req, item);
-                        // Upload QR code to S3 and get URL
-                        uploadQRCode(multipartFile);
-                        Ticket ticket = Ticket.toEntity(req, eventInfo, seat, item.amount());
-                        ticketRepository.save(ticket);
+                        // QRcode를 S3에 저장
+                        String qrCodeUrl = uploadQRCode(multipartFile);
+                        ticketRepository.save(Ticket.toEntity(req, eventInfo, seat, item.amount(),qrCodeUrl));
                     });
         });
     }
@@ -97,7 +96,6 @@ public class TicketServiceImpl implements TicketService {
         Ticket bySeatId = ticketRepository.findBySeatId(req.seatId()).orElseThrow(SeatNotFoundException::new);
         bySeatId.refundTicket();
     }
-
 
     /**
      * 쓸 수 있는 티켓 반환
