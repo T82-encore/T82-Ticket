@@ -42,12 +42,14 @@ public class Ticket {
     private int paymentAmount;
     @Column(name = "ORDER_NUM")
     private String orderNum;
+    @Column(name = "QRCODE_URL")
+    private String qrCodeUrl;
 
     public void refundTicket(){
         this.isRefund = true;
     }
 
-    public static Ticket toEntity(TicketRequestDto req, EventInfoResponseDto eventInfo, SeatResponseDto seat, int amount) {
+    public static Ticket toEntity(TicketRequestDto req, EventInfoResponseDto eventInfo, SeatResponseDto seat, int amount,String qrCodeUrl) {
 
         return Ticket.builder()
                 .userId(req.userId())
@@ -62,6 +64,7 @@ public class Ticket {
                 .paymentDate(req.paymentDate())
                 .paymentAmount(amount)
                 .orderNum(req.orderNo())
+                .qrCodeUrl(qrCodeUrl)
                 .build();
     }
 }
