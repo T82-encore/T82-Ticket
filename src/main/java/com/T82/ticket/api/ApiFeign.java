@@ -20,7 +20,7 @@ public class ApiFeign {
     private final FeignSeat feignSeat;
     public final static List<Map<String, Object>> failList
             = new ArrayList<>();
-    public EventInfoResponseDto getEventInfo(String eventId) {
+    public EventInfoResponseDto getEventInfo(Long eventId) {
         try {
             return feignEventInfo.getEventInfo(eventId);
         } catch (Exception e) {

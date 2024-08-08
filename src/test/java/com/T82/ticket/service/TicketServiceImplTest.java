@@ -40,7 +40,7 @@ public class TicketServiceImplTest {
     public void testSaveTickets() throws Exception {
         // 준비 작업
         SeatRequestDto seatRequestDto = new SeatRequestDto(1, 100);
-        TicketRequestDto req = new TicketRequestDto("event123", "user456", "order789", "2024-08-01", List.of(seatRequestDto));
+        TicketRequestDto req = new TicketRequestDto(13L, "user456", "order789", "2024-08-01", List.of(seatRequestDto));
         EventInfoResponseDto eventInfo = mock(EventInfoResponseDto.class);
         SeatResponseDto seat = mock(SeatResponseDto.class);
 
@@ -50,7 +50,7 @@ public class TicketServiceImplTest {
         byte[] qrCodeData = new byte[1]; // 예제 데이터
         String qrCodeUrl = "https://example.com/qr.png";
 
-        when(apiFeign.getEventInfo("event123")).thenReturn(eventInfo);
+        when(apiFeign.getEventInfo(13L)).thenReturn(eventInfo);
         when(apiFeign.getSeats(List.of(1L))).thenReturn(List.of(seat));
         when(qrCodeService.generateQRCode("1", 200, 200)).thenReturn(qrCodeData);
         when(fileUploadService.save(any(MultipartFile.class))).thenReturn(qrCodeUrl);
