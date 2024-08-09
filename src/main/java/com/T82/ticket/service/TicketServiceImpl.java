@@ -41,13 +41,12 @@ public class TicketServiceImpl implements TicketService {
     /**
      * 결제 후 Kafka로 예매결과, 결제결과정보 전송 후 처리
      */
-    @KafkaListener(topics = "paymentSuccess", groupId = "paySuccess-group")
+//    @KafkaListener(topics = "paymentSuccess", groupId = "paySuccess-group")
     @Override
-    @Transactional
     public void saveTickets(TicketRequestDto req) {
         log.info("paymentSuccess = {}",req.toString());
-//        EventInfoResponseDto eventInfo = apiFeign.getEventInfo(req.eventId());
-        GetEventReply eventInfo = grpcClientService.getEventInfo(req.eventId());
+        Long start = System.currentTimeMillis();
+        EventInfoResponseDto eventInfo = apiFeign.getEventInfo(req.eventId());
         // 좌석 ID 목록 생성
         List<Long> seatIdList = new ArrayList<>();
         req.items().forEach(item -> seatIdList.add((long) item.seatId()));
@@ -56,8 +55,8 @@ public class TicketServiceImpl implements TicketService {
         // 좌석 정보와 요청 항목을 매칭하여 티켓 저장
         seats.forEach(seat -> {
             req.items()
-//                    .stream()
-//                    .filter(item -> item.seatId()==seat.seatId())
+                    .stream()
+                    .filter(item -> item.seatId()==seat.seatId())
                     .forEach(item -> {
                         // qr코드 생성
                         MultipartFile multipartFile = createQRCode(req, item);
@@ -66,6 +65,8 @@ public class TicketServiceImpl implements TicketService {
                         ticketRepository.save(Ticket.toEntity(req, eventInfo, seat, item.amount(),qrCodeUrl));
                     });
         });
+        Long end = System.currentTimeMillis();
+        log.info("paymentSuccess = {}",(end - start));
     }
 
     private String uploadQRCode(MultipartFile multipartFile) {
