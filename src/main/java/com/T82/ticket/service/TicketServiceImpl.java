@@ -1,5 +1,6 @@
 package com.T82.ticket.service;
 
+import com.T82.common_exception.exception.seat.SeatNotFoundException;
 import com.T82.ticket.api.ApiFeign;
 import com.T82.ticket.dto.request.SeatRequestDto;
 import com.T82.ticket.dto.request.TicketRequestDto;
@@ -9,7 +10,6 @@ import com.T82.ticket.dto.response.SeatResponseDto;
 import com.T82.ticket.dto.response.TicketResponseDto;
 import com.T82.ticket.global.domain.dto.UserDto;
 import com.T82.ticket.global.domain.entity.Ticket;
-import com.T82.ticket.global.domain.exception.SeatNotFoundException;
 import com.T82.ticket.global.domain.repository.TicketRepository;
 import com.T82.ticket.utils.ByteArrayMultipartFile;
 import com.T82.ticket.utils.grpc.GrpcClientService;
