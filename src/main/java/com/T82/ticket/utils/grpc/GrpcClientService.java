@@ -32,11 +32,8 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class GrpcClientService {
-    private final QRCodeService qrCodeService;
-    private final FileUploadService fileUploadService;
     private final TicketRepository ticketRepository;
     private final ApiFeign apiFeign;
-    private final GrpcUtil grpcUtil;
 
     @GrpcClient("event")
     private EventGrpc.EventBlockingStub eventStub;
