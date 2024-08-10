@@ -27,12 +27,6 @@ public class TicketServiceImplTest {
     @Mock
     private TicketRepository ticketRepository;
 
-    @Mock
-    private QRCodeService qrCodeService;
-
-    @Mock
-    private FileUploadService fileUploadService;
-
     @InjectMocks
     private TicketServiceImpl ticketService;
 
@@ -52,8 +46,6 @@ public class TicketServiceImplTest {
 
         when(apiFeign.getEventInfo(13L)).thenReturn(eventInfo);
         when(apiFeign.getSeats(List.of(1L))).thenReturn(List.of(seat));
-        when(qrCodeService.generateQRCode("1", 200, 200)).thenReturn(qrCodeData);
-        when(fileUploadService.save(any(MultipartFile.class))).thenReturn(qrCodeUrl);
 
         // 테스트 실행
         ticketService.saveTickets(req);

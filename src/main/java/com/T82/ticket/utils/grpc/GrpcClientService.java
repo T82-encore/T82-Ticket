@@ -2,31 +2,22 @@ package com.T82.ticket.utils.grpc;
 
 import com.T82.common_exception.exception.coupon.NotFoundRemainingCouponException;
 import com.T82.ticket.api.ApiFeign;
-import com.T82.ticket.api.FeignQRCode;
-import com.T82.ticket.dto.request.SeatRequestDto;
 import com.T82.ticket.dto.request.TicketRequestDto;
 import com.T82.ticket.dto.response.QRCodeResponseDto;
 import com.T82.ticket.global.domain.entity.Ticket;
 import com.T82.ticket.global.domain.repository.TicketRepository;
-import com.T82.ticket.service.FileUploadService;
-import com.T82.ticket.service.QRCodeService;
-import com.T82.ticket.utils.ByteArrayMultipartFile;
-import com.google.zxing.WriterException;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.t82.event.lib.EventGrpc;
 import org.t82.event.lib.GetEventReply;
 import org.t82.event.lib.GetEventRequest;
 import org.t82.seat.lib.SeatDetailRequest;
 import org.t82.seat.lib.SeatDetailResponse;
 import org.t82.seat.lib.SeatGrpc;
-
-import java.io.IOException;
 
 @Service
 @Slf4j
