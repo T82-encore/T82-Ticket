@@ -12,6 +12,7 @@ import com.T82.ticket.global.domain.entity.Ticket;
 import com.T82.ticket.global.domain.exception.SeatNotFoundException;
 import com.T82.ticket.global.domain.repository.TicketRepository;
 import com.T82.ticket.utils.ByteArrayMultipartFile;
+import com.T82.ticket.utils.grpc.GrpcClientService;
 import com.google.zxing.WriterException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.t82.event.lib.GetEventReply;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,14 +37,15 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
     private final QRCodeService qrCodeService;
     private final FileUploadService fileUploadService;
+    private final GrpcClientService grpcClientService;
     /**
      * 결제 후 Kafka로 예매결과, 결제결과정보 전송 후 처리
      */
-    @KafkaListener(topics = "paymentSuccess", groupId = "paySuccess-group")
+//    @KafkaListener(topics = "paymentSuccess", groupId = "paySuccess-group")
     @Override
-    @Transactional
     public void saveTickets(TicketRequestDto req) {
         log.info("paymentSuccess = {}",req.toString());
+        Long start = System.currentTimeMillis();
         EventInfoResponseDto eventInfo = apiFeign.getEventInfo(req.eventId());
         // 좌석 ID 목록 생성
         List<Long> seatIdList = new ArrayList<>();
@@ -51,7 +54,8 @@ public class TicketServiceImpl implements TicketService {
         List<SeatResponseDto> seats = apiFeign.getSeats(seatIdList);
         // 좌석 정보와 요청 항목을 매칭하여 티켓 저장
         seats.forEach(seat -> {
-            req.items().stream()
+            req.items()
+                    .stream()
                     .filter(item -> item.seatId()==seat.seatId())
                     .forEach(item -> {
                         // qr코드 생성
@@ -61,6 +65,8 @@ public class TicketServiceImpl implements TicketService {
                         ticketRepository.save(Ticket.toEntity(req, eventInfo, seat, item.amount(),qrCodeUrl));
                     });
         });
+        Long end = System.currentTimeMillis();
+        log.info("paymentSuccess = {}",(end - start));
     }
 
     private String uploadQRCode(MultipartFile multipartFile) {

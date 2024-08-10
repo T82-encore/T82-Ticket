@@ -5,7 +5,10 @@ import com.T82.ticket.dto.response.EventInfoResponseDto;
 import com.T82.ticket.dto.response.SeatResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.t82.event.lib.GetEventReply;
+import org.t82.seat.lib.SeatDetailResponse;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -61,6 +64,24 @@ public class Ticket {
                 .isRefund(false)
                 .eventName(eventInfo.title())
                 .eventStartTime(eventInfo.eventStartTime())
+                .paymentDate(req.paymentDate())
+                .paymentAmount(amount)
+                .orderNum(req.orderNo())
+                .qrCodeUrl(qrCodeUrl)
+                .build();
+    }
+    public static Ticket toEntity(TicketRequestDto req, GetEventReply eventInfo, SeatDetailResponse seat, int amount, String qrCodeUrl) {
+
+        return Ticket.builder()
+                .userId(req.userId())
+                .eventInfoId(eventInfo.getEventInfoId())
+                .sectionName(seat.getSection())
+                .seatId(seat.getId())
+                .rowNum(seat.getRowNum())
+                .columnNum(seat.getColNum())
+                .isRefund(false)
+                .eventName(eventInfo.getTitle())
+                .eventStartTime(java.sql.Timestamp.valueOf(LocalDateTime.parse(eventInfo.getEventStartTime())))
                 .paymentDate(req.paymentDate())
                 .paymentAmount(amount)
                 .orderNum(req.orderNo())
