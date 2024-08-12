@@ -19,7 +19,8 @@ public record TicketResponseDto (
         LocalDateTime eventStartTime,
         String paymentDate,
         int paymentAmount,
-        String orderNum
+        String orderNum,
+        String qrCodeUrl
         ) {
     public static TicketResponseDto from(Ticket ticket){
         return new TicketResponseDto(
@@ -35,7 +36,8 @@ public record TicketResponseDto (
                 convertToLocalDateTime(ticket.getEventStartTime()),
                 ticket.getPaymentDate(),
                 ticket.getPaymentAmount(),
-                ticket.getOrderNum()
+                ticket.getOrderNum(),
+                ticket.getQrCodeUrl()
         );
     }
     private static LocalDateTime convertToLocalDateTime(Date date) {
