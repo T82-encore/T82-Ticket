@@ -7,8 +7,10 @@ import com.T82.ticket.global.domain.dto.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface TicketService {
     void saveTickets(TicketRequestDto req);
     void refundTicket(refundRequestDto req);
-    Page<TicketResponseDto> getValidTickets(UserDto userDto, Pageable pageRequest);
+    List<TicketResponseDto> getValidTickets(UserDto userDto);
 }
