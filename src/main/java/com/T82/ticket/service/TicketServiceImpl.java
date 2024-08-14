@@ -87,5 +87,4 @@ public class TicketServiceImpl implements TicketService {
     public List<UserResponseDto> getUsersByEventId(String req) {
         return ticketRepository.findAllByUserId(req).stream().map(UserResponseDto::from).toList();
     }
-
 }
