@@ -2,9 +2,7 @@ package com.T82.ticket.dto.response;
 
 import com.T82.ticket.global.domain.entity.Ticket;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import java.sql.Timestamp;
 
 public record TicketResponseDto (
         Long ticketId,
@@ -16,7 +14,7 @@ public record TicketResponseDto (
         Integer columnNum,
         boolean isRefund,
         String eventName,
-        LocalDateTime eventStartTime,
+        Timestamp eventStartTime,
         String paymentDate,
         int paymentAmount,
         String orderNum,
@@ -33,14 +31,11 @@ public record TicketResponseDto (
                 ticket.getColumnNum(),
                 ticket.isRefund(),
                 ticket.getEventName(),
-                convertToLocalDateTime(ticket.getEventStartTime()),
+                ticket.getEventStartTime(),
                 ticket.getPaymentDate(),
                 ticket.getPaymentAmount(),
                 ticket.getOrderNum(),
                 ticket.getQrCodeUrl()
         );
-    }
-    private static LocalDateTime convertToLocalDateTime(Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 }
