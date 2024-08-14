@@ -80,9 +80,9 @@ public class TicketServiceImpl implements TicketService {
      */
     @Override
     @Transactional
-    public Page<TicketResponseDto> getValidTickets(UserDto userDto, Pageable pageRequest) {
-        Page<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(userDto.getId(),Timestamp.valueOf(LocalDateTime.now()), pageRequest);
-        return allByUserId.map(TicketResponseDto::from);
+    public List<TicketResponseDto> getValidTickets(UserDto userDto) {
+        List<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(userDto.getId(),Timestamp.valueOf(LocalDateTime.now()));
+        return allByUserId.stream().map(TicketResponseDto::from).toList();
     }
 
 }
