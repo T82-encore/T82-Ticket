@@ -18,4 +18,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findAllValidTicketByUserId(@Param("userId") String userId, @Param("currentDate") Timestamp currentDate);
 
     Optional<Ticket> findBySeatId(Long seatId);
+
+    List<Ticket> findAllByUserId(String userId);
 }
