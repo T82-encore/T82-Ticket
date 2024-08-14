@@ -1,14 +1,12 @@
 package com.T82.ticket.service;
 
 import com.T82.common_exception.exception.seat.SeatNotFoundException;
+import com.T82.common_exception.exception.user.UserNotFoundException;
 import com.T82.ticket.api.ApiFeign;
 import com.T82.ticket.dto.request.SeatRequestDto;
 import com.T82.ticket.dto.request.TicketRequestDto;
 import com.T82.ticket.dto.request.refundRequestDto;
-import com.T82.ticket.dto.response.EventInfoResponseDto;
-import com.T82.ticket.dto.response.QRCodeResponseDto;
-import com.T82.ticket.dto.response.SeatResponseDto;
-import com.T82.ticket.dto.response.TicketResponseDto;
+import com.T82.ticket.dto.response.*;
 import com.T82.ticket.global.domain.dto.UserDto;
 import com.T82.ticket.global.domain.entity.Ticket;
 import com.T82.ticket.global.domain.repository.TicketRepository;
@@ -83,6 +81,11 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketResponseDto> getValidTickets(UserDto userDto) {
         List<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(userDto.getId(),Timestamp.valueOf(LocalDateTime.now()));
         return allByUserId.stream().map(TicketResponseDto::from).toList();
+    }
+
+    @Override
+    public List<UserResponseDto> getUsersByEventId(String req) {
+        return ticketRepository.findAllByUserId(req).stream().map(UserResponseDto::from).toList();
     }
 
 }
