@@ -8,8 +8,8 @@ import lombok.*;
 import org.t82.event.lib.GetEventReply;
 import org.t82.seat.lib.SeatDetailResponse;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -23,6 +23,8 @@ public class Ticket {
     private Long ticketId;
     @Column(name = "EVENTINFO_ID")
     private Long eventInfoId;
+    @Column(name = "EVENT_ID")
+    private Long eventId;
     @Column(name = "USER_ID")
     private String userId;
     @Column(name = "SEAT_ID")
@@ -38,7 +40,7 @@ public class Ticket {
     @Column(name = "EVENT_NAME")
     private String eventName;
     @Column(name = "EVENT_START_TIME")
-    private Date eventStartTime;
+    private Timestamp eventStartTime;
     @Column(name = "PAYMENT_DATE")
     private String paymentDate;
     @Column(name = "PAYMENT_AMOUNT")
@@ -68,6 +70,7 @@ public class Ticket {
                 .paymentAmount(amount)
                 .orderNum(req.orderNo())
                 .qrCodeUrl(qrCodeUrl)
+                .eventId(req.eventId())
                 .build();
     }
     public static Ticket toEntity(TicketRequestDto req, GetEventReply eventInfo, SeatDetailResponse seat, int amount, String qrCodeUrl) {
@@ -81,11 +84,12 @@ public class Ticket {
                 .columnNum(seat.getColNum())
                 .isRefund(false)
                 .eventName(eventInfo.getTitle())
-                .eventStartTime(java.sql.Timestamp.valueOf(LocalDateTime.parse(eventInfo.getEventStartTime())))
+                .eventStartTime(Timestamp.valueOf(LocalDateTime.parse(eventInfo.getEventStartTime())))
                 .paymentDate(req.paymentDate())
                 .paymentAmount(amount)
                 .orderNum(req.orderNo())
                 .qrCodeUrl(qrCodeUrl)
+                .eventId(req.eventId())
                 .build();
     }
 }

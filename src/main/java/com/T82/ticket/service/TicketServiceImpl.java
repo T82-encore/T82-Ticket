@@ -21,8 +21,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -80,7 +81,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public Page<TicketResponseDto> getValidTickets(UserDto userDto, Pageable pageRequest) {
-        Page<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(userDto.getId(),new Date(), pageRequest);
+        Page<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(userDto.getId(),Timestamp.valueOf(LocalDateTime.now()), pageRequest);
         return allByUserId.map(TicketResponseDto::from);
     }
 

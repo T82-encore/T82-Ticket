@@ -50,12 +50,15 @@ public class GrpcClientService {
         StreamObserver<SeatDetailResponse> responseObserver = new StreamObserver<SeatDetailResponse>() {
             @Override
             public void onNext(SeatDetailResponse reply) {
+                log.info("reply : {}", reply);
                 req.items()
                         .stream()
                         .filter(item -> item.seatId() == reply.getId())
                         .forEach(item -> {
                             try {
+                                log.info("QR코드 생성 시작");
                                 QRCodeResponseDto qrResponse = apiFeign.uploadQRCode(String.valueOf(item.seatId()));
+                                log.info("QR코드 생성 완료");
                                 ticketRepository.save(Ticket.toEntity(req, eventReply, reply, item.amount(), qrResponse.fileUrl()));
                             } catch (RuntimeException e) {
                                 throw new NotFoundRemainingCouponException();
@@ -66,7 +69,9 @@ public class GrpcClientService {
             @Override
             public void onError(Throwable t) {
                 // 에러 발생 시 처리
-                System.err.println("Error: " + t.getMessage());
+                System.out.println(t.toString());
+                System.out.println(t.getCause().toString());
+                System.err.println("Error: " + t);
             }
 
             @Override
