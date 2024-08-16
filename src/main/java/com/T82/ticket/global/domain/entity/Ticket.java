@@ -40,7 +40,7 @@ public class Ticket {
     @Column(name = "EVENT_NAME")
     private String eventName;
     @Column(name = "EVENT_START_TIME")
-    private Timestamp eventStartTime;
+    private LocalDateTime eventStartTime;
     @Column(name = "PAYMENT_DATE")
     private String paymentDate;
     @Column(name = "PAYMENT_AMOUNT")
@@ -65,7 +65,7 @@ public class Ticket {
                 .columnNum(seat.seatColumnNumber())
                 .isRefund(false)
                 .eventName(eventInfo.title())
-                .eventStartTime(eventInfo.eventStartTime())
+                .eventStartTime(eventInfo.eventStartTime().toLocalDateTime())
                 .paymentDate(req.paymentDate())
                 .paymentAmount(amount)
                 .orderNum(req.orderNo())
@@ -84,7 +84,7 @@ public class Ticket {
                 .columnNum(seat.getColNum())
                 .isRefund(false)
                 .eventName(eventInfo.getTitle())
-                .eventStartTime(Timestamp.valueOf(LocalDateTime.parse(eventInfo.getEventStartTime())))
+                .eventStartTime(LocalDateTime.parse(eventInfo.getEventStartTime().replace(" ","T")).minusHours(9))
                 .paymentDate(req.paymentDate())
                 .paymentAmount(amount)
                 .orderNum(req.orderNo())

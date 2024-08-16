@@ -14,5 +14,5 @@ public interface TicketService {
     void saveTickets(TicketRequestDto req);
     void refundTicket(refundRequestDto req);
     List<TicketResponseDto> getValidTickets(UserDto userDto);
-    List<UserResponseDto> getUsersByEventId(String req);
+    List<UserResponseDto> getUsersByEventId(Long req);
 }

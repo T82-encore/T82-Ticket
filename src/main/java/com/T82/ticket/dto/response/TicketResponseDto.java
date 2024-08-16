@@ -3,6 +3,7 @@ package com.T82.ticket.dto.response;
 import com.T82.ticket.global.domain.entity.Ticket;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public record TicketResponseDto (
         Long ticketId,
@@ -14,7 +15,7 @@ public record TicketResponseDto (
         Integer columnNum,
         boolean isRefund,
         String eventName,
-        Timestamp eventStartTime,
+        LocalDateTime eventStartTime,
         String paymentDate,
         int paymentAmount,
         String orderNum,
