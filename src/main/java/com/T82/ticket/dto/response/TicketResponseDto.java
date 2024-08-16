@@ -32,7 +32,7 @@ public record TicketResponseDto (
                 ticket.getColumnNum(),
                 ticket.isRefund(),
                 ticket.getEventName(),
-                ticket.getEventStartTime(),
+                ticket.getEventStartTime().plusHours(9),
                 ticket.getPaymentDate(),
                 ticket.getPaymentAmount(),
                 ticket.getOrderNum(),
