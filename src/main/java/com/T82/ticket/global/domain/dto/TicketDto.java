@@ -1,7 +1,7 @@
 package com.T82.ticket.global.domain.dto;
 
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public record TicketDto (
         Long ticketId,
@@ -13,7 +13,7 @@ public record TicketDto (
         int seatColumnNumber,
         boolean isRefund,
         String eventName,
-        Timestamp eventStartTime,
+        LocalDateTime eventStartTime,
         String paymentDate,
         int amount,
         String orderNum

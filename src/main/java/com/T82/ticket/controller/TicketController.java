@@ -25,7 +25,7 @@ public class TicketController {
 
     @GetMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserResponseDto> getUsersByEventId(@PathVariable(name = "eventId") String eventId){
+    public List<UserResponseDto> getUsersByEventId(@PathVariable(name = "eventId") Long eventId){
         return ticketService.getUsersByEventId(eventId);
     }
 }

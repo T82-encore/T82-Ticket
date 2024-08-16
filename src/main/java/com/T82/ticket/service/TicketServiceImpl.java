@@ -79,12 +79,12 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public List<TicketResponseDto> getValidTickets(UserDto userDto) {
-        List<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(userDto.getId(),Timestamp.valueOf(LocalDateTime.now()));
+        List<Ticket> allByUserId = ticketRepository.findAllValidTicketByUserId(userDto.getId(),LocalDateTime.now().minusHours(9));
         return allByUserId.stream().map(TicketResponseDto::from).toList();
     }
 
     @Override
-    public List<UserResponseDto> getUsersByEventId(String req) {
-        return ticketRepository.findAllByUserId(req).stream().map(UserResponseDto::from).toList();
+    public List<UserResponseDto> getUsersByEventId(Long req) {
+        return ticketRepository.findAllByEventId(req).stream().map(UserResponseDto::from).toList();
     }
 }

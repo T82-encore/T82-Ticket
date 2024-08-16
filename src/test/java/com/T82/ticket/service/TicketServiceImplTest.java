@@ -15,6 +15,8 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.mockito.Mockito.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -53,4 +55,5 @@ public class TicketServiceImplTest {
         // 검증
         verify(ticketRepository, times(1)).save(any(Ticket.class));
     }
+
 }
