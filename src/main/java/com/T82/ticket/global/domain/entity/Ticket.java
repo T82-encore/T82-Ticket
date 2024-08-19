@@ -41,6 +41,8 @@ public class Ticket {
     private String eventName;
     @Column(name = "EVENT_START_TIME")
     private LocalDateTime eventStartTime;
+    @Column(name = "IMAGE_URL")
+    private String imageUrl;
     @Column(name = "PAYMENT_DATE")
     private String paymentDate;
     @Column(name = "PAYMENT_AMOUNT")
@@ -85,6 +87,7 @@ public class Ticket {
                 .isRefund(false)
                 .eventName(eventInfo.getTitle())
                 .eventStartTime(LocalDateTime.parse(eventInfo.getEventStartTime().replace(" ","T")).minusHours(9))
+                .imageUrl(eventInfo.getImageUrl())
                 .paymentDate(req.paymentDate())
                 .paymentAmount(amount)
                 .orderNum(req.orderNo())
