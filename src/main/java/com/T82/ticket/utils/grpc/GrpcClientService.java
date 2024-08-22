@@ -32,7 +32,7 @@ public class GrpcClientService {
     @GrpcClient("seat")
     private SeatGrpc.SeatStub seatStub;
 
-    @KafkaListener(topics = "paymentSuccess", groupId = "paySuccess-group")
+//    @KafkaListener(topics = "paymentSuccess", groupId = "paySuccess-group")
     public void saveTickets(TicketRequestDto req) {
         log.info("티켓 발급 시작");
         long start = System.currentTimeMillis();
