@@ -34,7 +34,7 @@ public class GrpcClientService {
 
     @KafkaListener(topics = "paymentSuccess", groupId = "paySuccess-group")
     public void saveTickets(TicketRequestDto req) {
-        log.info("paymentSuccess = {}", req.toString());
+        log.info("티켓 발급 시작");
         long start = System.currentTimeMillis();
         GetEventReply eventReply = eventStub.getEventDetail(
                 GetEventRequest
@@ -47,18 +47,16 @@ public class GrpcClientService {
         SeatDetailRequest.Builder builder = SeatDetailRequest.newBuilder();
         req.items().forEach(item -> builder.addSeatId(item.seatId()));
         // StreamObserver 생성
+        long start1 = System.currentTimeMillis();
         StreamObserver<SeatDetailResponse> responseObserver = new StreamObserver<SeatDetailResponse>() {
             @Override
             public void onNext(SeatDetailResponse reply) {
-                log.info("reply : {}", reply);
                 req.items()
                         .stream()
                         .filter(item -> item.seatId() == reply.getId())
                         .forEach(item -> {
                             try {
-                                log.info("QR코드 생성 시작");
                                 QRCodeResponseDto qrResponse = apiFeign.uploadQRCode(String.valueOf(item.seatId()));
-                                log.info("QR코드 생성 완료");
                                 ticketRepository.save(Ticket.toEntity(req, eventReply, reply, item.amount(), qrResponse.fileUrl()));
                             } catch (RuntimeException e) {
                                 throw new NotFoundRemainingCouponException();
@@ -76,7 +74,8 @@ public class GrpcClientService {
 
             @Override
             public void onCompleted() {
-                log.info("paymentSuccess 시간 소요 = {}", (System.currentTimeMillis() - start));
+                log.info("좌석 통신 후 티켓 {}장 발급 소요시간 = {}",req.items().size(), (System.currentTimeMillis() - start1));
+                log.info("총 소요시간 = {}", (System.currentTimeMillis() - start));
                 // 서버에서 모든 스트림 메시지를 전송한 후 처리
                 System.out.println("Stream completed.   ");
             }

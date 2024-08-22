@@ -37,10 +37,12 @@ public class TicketServiceImpl implements TicketService {
 //    @KafkaListener(topics = "paymentSuccess", groupId = "paySuccess-group")
     @Override
     public void saveTickets(TicketRequestDto req) {
-        log.info("paymentSuccess = {}",req.toString());
-        Long start = System.currentTimeMillis();
+        log.info("티켓 발급 시작");
+        long start = System.currentTimeMillis();
         EventInfoResponseDto eventInfo = apiFeign.getEventInfo(req.eventId());
+        log.info("이벤트 통신 시간 : {}", (System.currentTimeMillis() - start));
         // 좌석 ID 목록 생성
+        long start1 = System.currentTimeMillis();
         List<Long> seatIdList = new ArrayList<>();
         req.items().forEach(item -> seatIdList.add((long) item.seatId()));
         // 좌석 정보 가져오기
@@ -55,8 +57,9 @@ public class TicketServiceImpl implements TicketService {
                         ticketRepository.save(Ticket.toEntity(req, eventInfo, seat, item.amount(), qrResponse.fileUrl()));
                     });
         });
-        Long end = System.currentTimeMillis();
-        log.info("paymentSuccess = {}",(end - start));
+        long end = System.currentTimeMillis();
+        log.info("좌석 통신 후 티켓 {}장 발급 소요시간 = {}",seats.size(), (end - start1));
+        log.info("총 소요시간 = {}",(end - start));
     }
 
 
